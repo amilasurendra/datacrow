@@ -10,12 +10,55 @@ repositories {
 dependencies {
     compile project(':datacrow-core')
     compile project(':datacrow-server')
-    compile fileTree(dir: 'lib/apache-tika', include:'*.jar')
-    compile fileTree(dir: 'lib/chart', include:'*.jar')
-    compile fileTree(dir: 'lib/javahelp', include:'*.jar')
-    compile fileTree(dir: 'lib/laf', include:'*.jar')
+    compile fileTree(dir: 'lib/apache-tika', include: '*.jar')
+    compile fileTree(dir: 'lib/chart', include: '*.jar')
+    compile fileTree(dir: 'lib/javahelp', include: '*.jar')
+    compile fileTree(dir: 'lib/laf', include: '*.jar')
     compile group: 'joda-time', name: 'joda-time', version: '1.5.2'
 }
+
+distributions {
+    main {
+        baseName = 'DatacrowClient'
+        contents {
+            from('data') {
+                into "data"
+            }
+            from('fonts') {
+                into "fonts"
+            }
+            from('help') {
+                into "help"
+            }
+            from('icons') {
+                into "icons"
+            }
+            from('modules') {
+                into "modules"
+            }
+            from('plugins') {
+                into "plugins"
+            }
+            from('readme') {
+                into "readme"
+            }
+            from('reports') {
+                into "reports"
+            }
+            from('resources') {
+                into "resources"
+            }
+            from('services'){
+                into "services"
+            }
+            from('upgrade'){
+                into "upgrade"
+            }
+            from 'log4j.properties'
+        }
+    }
+}
+
 
 
 mainClassName = 'net.datacrow.DataCrow'
@@ -23,6 +66,6 @@ mainClassName = 'net.datacrow.DataCrow'
 jar {
     manifest {
         attributes 'Main-Class': mainClassName,
-                'Class-Path': configurations.runtime.files.collect {"$it.name"}.join(' ')
+                'Class-Path': configurations.runtime.files.collect { "$it.name" }.join(' ')
     }
 }
