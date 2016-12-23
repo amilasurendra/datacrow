@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="default" name="stylesheets/style.css" />
+</h:head>
+
+<h:body>
+<p:layout fullPage="true">
+
+    <p:layoutUnit position="north" resizable="false" style="border:none;" class="dcLayout" id="mainMenu">
+	    <h:form>
+		    <p:menubar model="#{mainMenuBean.model}">
+		        <f:facet name="options">
+		        
+		            <p:inputText value="#{itemsBean.items.searchString}" style="width:205px !important;" />
+		            <p:commandButton icon="fa fa-search" actionListener="#{itemsBean.search}" update=":itemOverviewForm:itemOverview" />
+		            
+		            <p:menuButton value="#{loginBean.username}" style="margin-left:10px;">
+		                <p:menuitem value="#{translationsBean.getText('lblLogoff')}" action="#{loginBean.logoff}" icon="ui-icon-extlink"/>
+		            </p:menuButton>
+		        </f:facet>
+		    </p:menubar>
+	     </h:form>
+    </p:layoutUnit>
+
+	<p:layoutUnit position="west" resizable="false" minSize="220" maxSize="220" style="border:none;">
+	    <ui:include src="menu.xhtml" />
+    </p:layoutUnit>
+
+	<p:layoutUnit position="center" style="border:none;overflow-y: hidden !important;">
+        <h:form id="itemOverviewForm">
+
+            <p:contextMenu id="contexMenu" for="itemOverview" rendered="#{modulesBean.selectedModule.editingAllowed}">
+                <p:menuitem id="miEdit" 
+                            icon="fa fa-edit" 
+                            value="#{translationsBean.getText('lblEdit')}"
+                            actionListener="#{itemsBean.startEditItem}"
+                            update=":editItemDetail"
+                            oncomplete="PF('editItemDetail').show()" />
+                <p:menuitem id="miOpen" 
+                            icon="fa fa-folder-open" 
+                            value="#{translationsBean.getText('lblView')}"
+                            actionListener="#{itemsBean.startViewItem}"
+                            update=":viewItemDetail" 
+                            oncomplete="PF('viewItemDetail').show()" />
+            </p:contextMenu>
+
+			<p:dataTable  var="item" 
+			              value="#{itemsBean.items.items}"
+			              selection="#{itemsBean.selectedItem}"
+			              rowKey="#{item.ID}" 
+						  id="itemOverview"
+						  selectionMode="single"
+						  rows="#{modulesBean.selectedModule.overviewRowLimit}" 
+						  paginator="true"
+				          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				          paginatorPosition="bottom"
+				          skipChildren="true"
+				          styleClass="itemoverview"
+				          style="width:100% !important;"
+                          rowIndexVar="selectedRowIndex"
+				          widgetVar="overview">
+
+               <p:ajax event="rowSelect" listener="#{itemsBean.onRowSelect}" oncomplete="PF('viewItemDetail').show()" update=":viewItemDetail" />
+
+			   <f:facet name="header">
+				   #{modulesBean.selectedModule.label}
+			   </f:facet>
+
+               <p:column style="width:220px;border:none !important;" rendered="#{modulesBean.selectedModule.advancedView}">
+                   <p:graphicImage value="#{imageBean.content}" rendered="#{item.cover.alive}" cache="false" immediate="true"
+                                   onclick="PF('overview').unselectAllRows();PF('overview').selectRow(#{selectedRowIndex}, false);">
+                        <f:param name="filename" value="#{item.cover.filename}_small" />
+                   </p:graphicImage>
+                   
+                   <p:graphicImage url="/datacrow/javax.faces.resource/default/images/noimage.png.xhtml" rendered="#{!item.cover.alive}"
+                                   onclick="PF('overview').unselectAllRows();PF('overview').selectRow(#{selectedRowIndex}, false);" />
+               </p:column>
+
+               <p:column style="border:none !important;" rendered="#{modulesBean.selectedModule.advancedView}">
+                   <p:panel style="height:30px;border:none;">
+                        <ui:repeat value="#{item.overviewFields}" var="field">
+                            <div data-role="fieldcontain" class = "ui-hide-label" style="float:left;margin-right:5px;" 
+                                 onclick="PF('overview').unselectAllRows();PF('overview').selectRow(#{selectedRowIndex}, false);">
+                                <b><h:outputText value="#{field.label}" /></b>
+                            </div>
+                            <div data-role="fieldcontain" class="ui-hide-label" style="float:left;margin-right:10px;"
+                                 onclick="PF('overview').unselectAllRows();PF('overview').selectRow(#{selectedRowIndex}, false);">
+                                <ui:include src="viewfield.xhtml" />
+                            </div>
+                        </ui:repeat>
+                     </p:panel>
+                     <p:panel style="border:none;">
+                        <ui:repeat value="#{item.overviewFieldsSpan}" var="field">
+                           <ui:include src="viewfield.xhtml" />
+                        </ui:repeat>
+                     </p:panel>
+	           </p:column>
+	           
+	           <p:column style="border:none;" rendered="#{!modulesBean.selectedModule.advancedView}">
+                    <p:panel>
+                        <table class="layouttable" style="border:none;padding:0px;margin:0;">
+                            <tr style="border:none;padding:0px;margin:0;">
+                                <td style="border:none;padding:0px;margin:0;width:25px;">
+                                    <p:graphicImage value="#{imageBean.content}" rendered="#{item.icon.alive}" cache="false"
+                                                    onclick="PF('overview').unselectAllRows();PF('overview').selectRow(#{selectedRowIndex}, false);">
+                                        <f:param name="filename" value="#{item.icon.filename}" />
+                                    </p:graphicImage>
+                                </td>
+                                <td style="border:none;padding:0px;margin:0;">
+                                    <h:outputText value="#{item.title}" />
+                                </td>
+                             </tr>
+                        </table>
+                    </p:panel>
+               </p:column>
+		    </p:dataTable>
+		</h:form>
+	
+        <ui:include src="edititemform.xhtml" />
+        <ui:include src="viewitemform.xhtml" />
+        <ui:include src="editoverviewsettings.xhtml" />
+        <ui:include src="edititemformsettings.xhtml" />
+        
+	</p:layoutUnit>
+</p:layout>
+    <script type="text/javascript">
+		function start() {
+		    PF('statusDialog').show();
+		}
+		 
+		function stop() {
+		    PF('statusDialog').hide();
+		}
+	</script>
+</h:body>
+</html>

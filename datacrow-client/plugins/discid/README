@@ -1,0 +1,98 @@
+
+discid
+
+Roland Schäuble
+     _________________________________________________________
+
+   Table of Contents
+   What is discid?
+   Supported Platforms
+   Installation
+   Usage
+   Output of discid
+   Download
+
+   a program to calculate the disc-ID for audio compact discs
+     _________________________________________________________
+
+What is discid?
+
+   discid  is  a  small  Program,  written  in  C++ to generate a
+   disk-ID  by  reading  the  track-info  of  a compact disc. The
+   disc-ID  is  used  to  identify  discs  at  CDDB-Servers (e.g.
+   http://www.freecddb.org)  and  send queries to CDDB-Servers to
+   get  information  about  Disc-Title,  Artist, Track-Titles and
+   more.
+     _________________________________________________________
+
+Supported Platforms
+
+   The  discid  program  has  been tested in Linux and Windows 32
+   native   and   Cygwin   (http://www.cygwin.com)  environments.
+   Windows  32  users  can compile discid using Visual C++ or gcc
+   although  ready  compiled  executables  for  all platforms are
+   included  in  the distribution. So the average user don't have
+   build the executables himself.
+
+   Macintosh  OS X support was added by Jeffrey C. Jacobs and has
+   been  tested with OS X 10.2.6. It requires the BSD SDK and gcc
+   for  OS X to compile; a binary is also included for Mac. Since
+   the  original  author  does  not have a Macintosh, support for
+   this  platform  can  not be guaranteed for future releases and
+   included  binary  files  for  Macintosh  may not represent the
+   latest state of development.
+
+   discid  can be used by PyCDDB http://pycddb.sourceforge.net to
+   generate the required format of the disc-ID.
+     _________________________________________________________
+
+Installation
+
+   There are several ways to install the program:
+
+     * Install the RPM-Distribution for Linux systems
+     * Copy  the TGZ distribution contents to your local computer
+       and compile.
+     * Copy  the  executable  discid-file  (discid  for Linux and
+       Macintosh  OS  X  platforms  and  discid.exe on Windows 32
+       platforms)  to  a  directory,  within the current path. On
+       Linux  and  Mac  OS X platforms, this might be /usr/bin or
+       /usr/local/bin.  On  Windows  32  platforms, this might be
+       C:\WINDOWS\system32.
+     _________________________________________________________
+
+Usage
+
+   $ discid [--help] [--version] [device...]
+
+   If  no  device  is given, the following devices are taken as a
+   default:
+
+     * /dev/cdrom on Linux systems
+     * cdaudio on Windows 32 native and Cygwin systems
+     * /dev/rdisk1 [Note: for Macs with more than 1 hard disk the
+       CDROM may be locatated at an alternate device location. If
+       unsure,  check the /dev directory when a cd is inserted to
+       see what rdisk<n> is created.]
+     _________________________________________________________
+
+Output of discid
+
+   The output of discid has the following format:
+8HexDigitID NumberOfTracks Track1StartFrame Track2StartFrame..TrackNSta
+rtFrame DiscLengthInSeconds
+
+   This format contains all information needed to make a query to
+   a  CDDB-server  and  is compatible to the one of other disc-ID
+   generating   programs   like   cd-discid  by  Robert  Woodcock
+   http://frantica.lly.org/~rcw/cd-discid/
+     _________________________________________________________
+
+Download
+
+   discid is hosted at http://sourceforge.net
+
+   The homepage of discid is http://discid.sourceforge.net
+
+   The   latest   version  of  discid  can  always  be  found  on
+   http://www.sourceforge.net/projects/discid

@@ -1,0 +1,28 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile project(':datacrow-core')
+    compile project(':datacrow-server')
+    compile fileTree(dir: 'lib/apache-tika', include:'*.jar')
+    compile fileTree(dir: 'lib/chart', include:'*.jar')
+    compile fileTree(dir: 'lib/javahelp', include:'*.jar')
+    compile fileTree(dir: 'lib/laf', include:'*.jar')
+    compile group: 'joda-time', name: 'joda-time', version: '1.5.2'
+}
+
+
+mainClassName = 'net.datacrow.DataCrow'
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName,
+                'Class-Path': configurations.runtime.files.collect {"$it.name"}.join(' ')
+    }
+}

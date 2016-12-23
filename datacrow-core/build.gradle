@@ -1,0 +1,21 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'lib/commons', include:'*.jar')
+    compile fileTree(dir: 'lib/jasper', include:'*.jar')
+    compile fileTree(dir: 'lib/html', include:'*.jar')
+    compile fileTree(dir: 'lib/jacksum', include:'*.jar')
+    compile fileTree(dir: 'lib/jaudiotagger', include:'*.jar')
+    compile fileTree(dir: 'lib/jebml', include:'*.jar')
+    compile fileTree(dir: 'lib/json', include:'*.jar')
+    compile fileTree(dir: 'lib/log4j', include:'*.jar')
+    compile fileTree(dir: 'lib/pdf', include:'*.jar')
+    compile fileTree(dir: 'lib/xml', include:'*.jar')
+    compile fileTree(dir: 'lib/xml-rpc', include:'*.jar')
+    compile fileTree(dir: 'lib/zip', include:'*.jar')
+}
