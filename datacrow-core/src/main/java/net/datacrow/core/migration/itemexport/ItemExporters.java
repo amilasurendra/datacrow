@@ -42,6 +42,7 @@ public class ItemExporters {
     private ItemExporters() {
         exporters.put("CSV", CsvExporter.class);
         exporters.put("XML", XmlExporter.class);
+        exporters.put("EXCEL", ExcelExporter.class);
     }
 
     public static ItemExporters getInstance() {
