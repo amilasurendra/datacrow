@@ -153,11 +153,9 @@ public class ExcelExporter extends ItemExporter  {
                     cell.setCellValue(tableData[rowIdx][columnIdx]);
                 }
             }
-
-            FileOutputStream fileOut = new FileOutputStream(file);
-            wb.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
+            wb.write(bos);
+            bos.flush();
+            bos.close();
             client.notify(DcResources.getText("lblExportHasFinished"));
         }
 
