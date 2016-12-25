@@ -1,11 +1,14 @@
+plugins {
+    id 'edu.sc.seis.launch4j' version '2.1.0'
+}
+
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'application'
+apply plugin: 'distribution'
 
 repositories {
     mavenCentral()
 }
-
 
 dependencies {
     compile project(':datacrow-core')
@@ -15,6 +18,12 @@ dependencies {
     compile fileTree(dir: 'lib/javahelp', include: '*.jar')
     compile fileTree(dir: 'lib/laf', include: '*.jar')
     compile group: 'joda-time', name: 'joda-time', version: '1.5.2'
+}
+
+createExe {
+    mainClassName = 'net.datacrow.DataCrow'
+    outfile = 'DataCrow.exe'
+    icon = project.projectDir.absolutePath + '/icons/datacrow.ico'
 }
 
 distributions {
@@ -55,17 +64,11 @@ distributions {
                 into "upgrade"
             }
             from 'log4j.properties'
+
+            from(createExe)
         }
     }
 }
 
-//applicationDefaultJvmArgs = ["-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"]
 
-mainClassName = 'net.datacrow.DataCrow'
 
-jar {
-    manifest {
-        attributes 'Main-Class': mainClassName,
-                'Class-Path': configurations.runtime.files.collect { "$it.name" }.join(' ')
-    }
-}
